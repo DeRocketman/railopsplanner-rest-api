@@ -21,5 +21,4 @@ public class TimeTableYear extends IdentifiedEntity{
 
     @OneToMany(mappedBy = "timeTableYear")
     List<RailNetwork> railNetworks;
-
 }
