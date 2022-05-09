@@ -26,7 +26,7 @@ public class TimeTableYearController {
     public ResponseEntity<TimeTableYear> updateTimeTableYear(@RequestBody TimeTableYear timeTableYear) {
         Optional<TimeTableYear> timeTableYearOptional = timeTableYearRepository.findById(timeTableYear.getId());
 
-        if(!timeTableYearOptional.isPresent()) {
+        if (timeTableYearOptional.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
 
