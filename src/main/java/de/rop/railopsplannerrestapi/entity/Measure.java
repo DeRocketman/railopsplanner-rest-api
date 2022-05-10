@@ -42,4 +42,7 @@ public class Measure extends IdentifiedEntity{
     @ManyToMany(mappedBy = "measures")
     List<User> clerks;
 
+    @OneToMany(mappedBy = "measure")
+    List<ToDoItem> toDoItems;
+
 }
