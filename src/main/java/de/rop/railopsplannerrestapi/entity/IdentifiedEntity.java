@@ -2,11 +2,9 @@ package de.rop.railopsplannerrestapi.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
 @Getter
@@ -14,6 +12,9 @@ import javax.persistence.MappedSuperclass;
 public abstract class IdentifiedEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid2")
+    @Column(name="id", unique = true)
+    String id;
+    
 }

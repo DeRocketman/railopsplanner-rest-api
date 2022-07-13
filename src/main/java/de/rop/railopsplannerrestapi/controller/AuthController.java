@@ -5,17 +5,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import de.rop.railopsplannerrestapi.entity.User;
 import de.rop.railopsplannerrestapi.repository.UserRepository;
 import de.rop.railopsplannerrestapi.request.AuthRequest;
 import de.rop.railopsplannerrestapi.security.JwtTokenProvider;
 
 import java.util.Optional;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -39,6 +36,7 @@ public class AuthController {
     public ResponseEntity<User> register(@RequestBody AuthRequest authRequest) {
         Optional<User> userOptional = userRepository.findUserByEmail(authRequest.getEmail());
 
+        // Check, if email already in use.
         if (userOptional.isPresent()) {
             return ResponseEntity.badRequest().build();
         }

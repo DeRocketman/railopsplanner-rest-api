@@ -19,6 +19,12 @@ public class TimeTableYear extends IdentifiedEntity{
     String firstDate;
     String lastDate;
 
+    int railNetworksCounter;
+    int planningPeriodsCounter;
+
     @OneToMany(mappedBy = "timeTableYear")
     List<RailNetwork> railNetworks;
+
+    @OneToMany(mappedBy = "timeTableYear")
+    List<PlanningPeriod> planningPeriods;
 }

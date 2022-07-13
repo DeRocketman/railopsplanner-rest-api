@@ -2,7 +2,9 @@ package de.rop.railopsplannerrestapi.repository;
 
 import de.rop.railopsplannerrestapi.entity.ToDoItem;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ToDoItemRepository extends JpaRepository<ToDoItem, Long> {
+@Repository
+public interface ToDoItemRepository extends JpaRepository<ToDoItem, String> {
 
 }

@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 public class Measure extends IdentifiedEntity{
     @ManyToOne
-    @JoinColumn(name = "planning_period_ref")
-    PlanningPeriod planningPeriod;
+    @JoinColumn(name = "rail_network_ref")
+    RailNetwork railNetwork;
 
     String name;
     String start;
@@ -44,5 +44,4 @@ public class Measure extends IdentifiedEntity{
 
     @OneToMany(mappedBy = "measure")
     List<ToDoItem> toDoItems;
-
 }
