@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("api/time_table_year")
+@RequestMapping("/api/time-table-year")
 public class TimeTableYearController {
     private final TimeTableYearService timeTableYearService;
     private final TimeTableYearRepository timeTableYearRepository;

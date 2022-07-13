@@ -32,7 +32,7 @@ public class AuthController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/sign-on")
     public ResponseEntity<User> register(@RequestBody AuthRequest authRequest) {
         Optional<User> userOptional = userRepository.findUserByEmail(authRequest.getEmail());
 
@@ -50,7 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(created);
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/sign-in")
     public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 @CrossOrigin
 @RestController
-@RequestMapping("api/measure")
+@RequestMapping("/api/measure")
 public class MeasureController {
 
     private MeasureRepository measureRepository;

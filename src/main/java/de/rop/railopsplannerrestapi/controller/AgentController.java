@@ -10,7 +10,7 @@ import de.rop.railopsplannerrestapi.repository.AgentRepository;
 import java.util.List;
 @CrossOrigin
 @RestController
-@RequestMapping("api/agent")
+@RequestMapping("/api/agent")
 public class AgentController {
     private final AgentRepository agentRepository;
 
