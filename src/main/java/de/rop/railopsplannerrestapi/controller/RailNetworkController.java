@@ -2,18 +2,15 @@ package de.rop.railopsplannerrestapi.controller;
 
 import de.rop.railopsplannerrestapi.entity.RailNetwork;
 import de.rop.railopsplannerrestapi.repository.RailNetworkRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/rail_network")
+@RequestMapping("/api/rail-network")
 public class RailNetworkController {
-    private RailNetworkRepository railNetworkRepository;
+    private final RailNetworkRepository railNetworkRepository;
 
     public RailNetworkController(RailNetworkRepository railNetworkRepository) {
         this.railNetworkRepository = railNetworkRepository;
@@ -24,5 +21,8 @@ public class RailNetworkController {
         return railNetworkRepository.findAll();
     }
 
-
+    @PostMapping("/create")
+    public RailNetwork newRailNetwork(@RequestBody RailNetwork newRailNetwork) {
+        return railNetworkRepository.save(newRailNetwork);
+    }
 }

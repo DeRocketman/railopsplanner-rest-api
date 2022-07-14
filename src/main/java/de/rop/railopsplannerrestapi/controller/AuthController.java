@@ -32,7 +32,7 @@ public class AuthController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @PostMapping(value = "/sign-on")
+    @PostMapping(value = "/sign-up")
     public ResponseEntity<User> register(@RequestBody AuthRequest authRequest) {
         Optional<User> userOptional = userRepository.findUserByEmail(authRequest.getEmail());
 

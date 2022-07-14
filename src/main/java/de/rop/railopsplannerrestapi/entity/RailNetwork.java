@@ -22,7 +22,6 @@ public class RailNetwork extends IdentifiedEntity{
 
     String name;
     String abbreviation;
-    int measureCounter;
 
     @OneToMany(mappedBy = "railNetwork")
     List<Measure> measures;
