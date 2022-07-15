@@ -1,7 +1,12 @@
 package de.rop.railopsplannerrestapi.controller;
 
 import de.rop.railopsplannerrestapi.entity.Measure;
+import de.rop.railopsplannerrestapi.entity.Measure;
+import de.rop.railopsplannerrestapi.entity.PlanningPeriod;
+import de.rop.railopsplannerrestapi.entity.TimeTableYear;
 import de.rop.railopsplannerrestapi.repository.MeasureRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +28,36 @@ public class MeasureController {
         return measureRepository.findAll();
     }
 
-    @PostMapping("/update_measure")
-    public ResponseEntity<Measure> updateMeasure(@RequestBody Measure measure) {
-        Optional<Measure> measureOptional = measureRepository.findById(measure.getId());
-
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Measure newTimeTableYear(@RequestBody Measure measure) {
+        return measureRepository.save(measure);
+    }
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Measure> updateMeasure(@PathVariable("id") String id,@RequestBody Measure measure) {
+        Optional<Measure> measureOptional = measureRepository.findById(id);
         if (measureOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(measureRepository.save(measure), HttpStatus.OK);
+    }
 
-        measureRepository.save(measure);
+    @GetMapping("/{id}")
+    public ResponseEntity<Measure> show(@PathVariable("id") String id) {
+        Optional<Measure> selectedMeasure = this.measureRepository.findById(id);
+        if (selectedMeasure.isPresent()) {
+            return new ResponseEntity<>(selectedMeasure.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
 
-        return ResponseEntity.ok(measure);
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code=HttpStatus.NO_CONTENT)
+    public void deleteOrder(@PathVariable String id) {
+        try {
+            this.measureRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

@@ -16,7 +16,6 @@ import java.util.List;
 @Setter
 public class RailNetwork extends IdentifiedEntity{
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "time_table_year_ref")
     TimeTableYear timeTableYear;
 

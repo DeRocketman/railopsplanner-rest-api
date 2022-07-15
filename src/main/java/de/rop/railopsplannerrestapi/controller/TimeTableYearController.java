@@ -3,6 +3,7 @@ package de.rop.railopsplannerrestapi.controller;
 import de.rop.railopsplannerrestapi.entity.TimeTableYear;
 import de.rop.railopsplannerrestapi.repository.TimeTableYearRepository;
 import de.rop.railopsplannerrestapi.service.TimeTableYearService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +17,25 @@ import java.util.Optional;
 public class TimeTableYearController {
     private final TimeTableYearService timeTableYearService;
     private final TimeTableYearRepository timeTableYearRepository;
+
     public TimeTableYearController(TimeTableYearService tableYearService, TimeTableYearRepository timeTableYearRepository) {
         this.timeTableYearService = tableYearService;
         this.timeTableYearRepository = timeTableYearRepository;
     }
 
-    @CrossOrigin
     @GetMapping("")
     public List<TimeTableYear> index() {
         return timeTableYearRepository.findAll();
     }
 
-    @CrossOrigin
     @PostMapping("/create")
-    public TimeTableYear newTimeTableYear(@RequestBody TimeTableYear newTimeTableYear) {
-        return timeTableYearRepository.save(newTimeTableYear);
+    @ResponseStatus(HttpStatus.CREATED)
+    public TimeTableYear newTimeTableYear(@RequestBody TimeTableYear requestedTimeTableYear) {
+        return timeTableYearRepository.save(requestedTimeTableYear);
     }
-
-    @CrossOrigin
     @PutMapping("/edit/{id}")
     public ResponseEntity<TimeTableYear> updateTimeTableYear(@PathVariable("id") String id, @RequestBody TimeTableYear timeTableYear) {
         Optional<TimeTableYear> storedTimeTableYear = timeTableYearRepository.findById(id);
-        System.out.println("UpdateMethode fuer ID:" + id);
 
         if (storedTimeTableYear.isPresent()) {
             TimeTableYear tempTimeTable = storedTimeTableYear.get();
@@ -49,10 +47,17 @@ public class TimeTableYearController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id}")
     public ResponseEntity<TimeTableYear> show(@PathVariable String id) {
         return ResponseEntity.ok(timeTableYearService.findById(id));
+    }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code=HttpStatus.NO_CONTENT)
+    public void deleteOrder(@PathVariable String id) {
+        try {
+            this.timeTableYearRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

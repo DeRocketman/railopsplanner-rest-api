@@ -1,5 +1,6 @@
 package de.rop.railopsplannerrestapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,12 +20,11 @@ public class TimeTableYear extends IdentifiedEntity{
     String firstDate;
     String lastDate;
 
-    int railNetworksCounter;
-    int planningPeriodsCounter;
-
     @OneToMany(mappedBy = "timeTableYear")
+    @JsonIgnoreProperties({"timeTableYear"})
     List<RailNetwork> railNetworks;
 
     @OneToMany(mappedBy = "timeTableYear")
+    @JsonIgnoreProperties({"timeTableYear"})
     List<PlanningPeriod> planningPeriods;
 }
