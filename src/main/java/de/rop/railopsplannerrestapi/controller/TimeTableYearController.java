@@ -53,7 +53,7 @@ public class TimeTableYearController {
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void deleteOrder(@PathVariable String id) {
+    public void deleteTimeTableYear(@PathVariable String id) {
         try {
             this.timeTableYearRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {

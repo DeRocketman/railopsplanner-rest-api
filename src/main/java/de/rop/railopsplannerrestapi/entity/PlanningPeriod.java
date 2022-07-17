@@ -7,14 +7,12 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
 public class PlanningPeriod extends IdentifiedEntity{
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "time_table_year_ref")
     TimeTableYear timeTableYear;

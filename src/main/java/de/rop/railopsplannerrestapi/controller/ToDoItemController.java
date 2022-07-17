@@ -53,7 +53,7 @@ public class ToDoItemController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void deleteOrder(@PathVariable String id) {
+    public void deleteToDoItem(@PathVariable String id) {
         try {
             this.toDoItemRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {

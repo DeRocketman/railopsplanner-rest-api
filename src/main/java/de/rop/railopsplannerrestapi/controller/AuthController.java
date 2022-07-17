@@ -1,5 +1,6 @@
 package de.rop.railopsplannerrestapi.controller;
 
+import de.rop.railopsplannerrestapi.entity.EnumRole;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +45,7 @@ public class AuthController {
         User user = new User();
         user.setEmail(authRequest.getEmail());
         user.setPassword(passwordEncoder.encode(authRequest.getPassword()));
-
+        user.setRole(EnumRole.ROLE_READER);
         User created = userRepository.save(user);
 
         return ResponseEntity.ok(created);

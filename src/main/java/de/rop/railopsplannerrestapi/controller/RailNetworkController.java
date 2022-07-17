@@ -56,7 +56,7 @@ public class RailNetworkController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void deleteOrder(@PathVariable String id) {
+    public void deleteRailNetwork(@PathVariable String id) {
         try {
             this.railNetworkRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
