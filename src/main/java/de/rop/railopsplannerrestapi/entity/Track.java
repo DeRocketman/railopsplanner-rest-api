@@ -15,6 +15,8 @@ public class Track extends IdentifiedEntity {
 
     boolean positiveDirection = true;
 
+    String trackNumber;
+
     @ManyToMany(targetEntity = Line.class)
     @JoinColumn(name = "line_ref")
     List<Line> lines;
@@ -30,4 +32,9 @@ public class Track extends IdentifiedEntity {
     @ManyToMany(targetEntity = Station.class)
     @JoinColumn(name = "cross_station")
     List<Station> crossStations;
+
+    @ManyToOne
+    @JoinColumn(name = "track_group_ref")
+    TrackGroup trackGroup;
+
 }
