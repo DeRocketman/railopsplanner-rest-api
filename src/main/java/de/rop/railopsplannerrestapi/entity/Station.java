@@ -25,5 +25,7 @@ public class Station extends IdentifiedEntity{
     //Value for calculating lost kilometers
     Float positionValue;
 
+    Integer transferTime;
+
 }
 
