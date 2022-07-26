@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/TrackController")
+@RequestMapping("/api/track")
 public class TrackController {
     private final TrackRepository trackRepository;
 
@@ -28,6 +28,7 @@ public class TrackController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Track newTrack(@RequestBody Track newTrack) {
+
         return trackRepository.save(newTrack);
     }
 

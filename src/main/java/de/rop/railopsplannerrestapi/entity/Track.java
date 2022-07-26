@@ -1,5 +1,6 @@
 package de.rop.railopsplannerrestapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,24 +18,13 @@ public class Track extends IdentifiedEntity {
 
     String trackNumber;
 
-    @ManyToMany(targetEntity = Line.class)
-    @JoinColumn(name = "line_ref")
-    List<Line> lines;
+    String lineNumber;
 
-    @ManyToOne(targetEntity = Station.class)
-    @JoinColumn(name = "start_point")
-    Station startPoint;
-
-    @ManyToOne(targetEntity = Station.class)
-    @JoinColumn(name = "end_point")
-    Station endPoint;
-
-    @ManyToMany(targetEntity = Station.class)
-    @JoinColumn(name = "cross_station")
-    List<Station> crossStations;
+    @OneToMany(mappedBy = "track")
+    @JsonIgnoreProperties({"track"})
+    List<TrackStation> stations;
 
     @ManyToOne
     @JoinColumn(name = "track_group_ref")
     TrackGroup trackGroup;
-
 }
