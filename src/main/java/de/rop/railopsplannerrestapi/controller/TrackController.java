@@ -45,6 +45,8 @@ public class TrackController {
                 trackStationRepository.save(tempStation);
             }
         }
+        System.out.println("tempTrack:" + tempTrack.getId());
+        System.out.println("responseTrack" + responseTrack.getId());
         return responseTrack;
     }
 
