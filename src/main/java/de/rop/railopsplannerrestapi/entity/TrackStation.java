@@ -1,34 +1,26 @@
 package de.rop.railopsplannerrestapi.entity;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
+
 @Entity
-@Getter
-@Setter
+@Getter @Setter @RequiredArgsConstructor
 public class TrackStation extends IdentifiedEntity{
-
     Integer currentNumber;
-
     String name;
-
     String rl100;
-
-    @Enumerated(EnumType.STRING)
-    StationType stationType;
-
-    //Value for calculating lost kilometers
+    String StationType;
     Float positionValue;
-
-    Integer transferTime;
-
-    Boolean railReplacementStop = true;
-
+    Float transferTime;
+    Boolean railReplacementStop;
     Float railReplacementDrivingTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "track_ref")
-    Track track;
+    private Track track;
+
 }

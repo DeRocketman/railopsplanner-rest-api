@@ -2,7 +2,6 @@ package de.rop.railopsplannerrestapi.controller;
 
 
 import de.rop.railopsplannerrestapi.entity.TrackStation;
-import de.rop.railopsplannerrestapi.entity.TrackStation;
 import de.rop.railopsplannerrestapi.repository.TrackStationRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

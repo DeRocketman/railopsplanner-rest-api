@@ -1,7 +1,9 @@
 package de.rop.railopsplannerrestapi.controller;
 
 import de.rop.railopsplannerrestapi.entity.Track;
+import de.rop.railopsplannerrestapi.entity.TrackStation;
 import de.rop.railopsplannerrestapi.repository.TrackRepository;
+import de.rop.railopsplannerrestapi.repository.TrackStationRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,11 @@ import java.util.Optional;
 @RequestMapping("/api/track")
 public class TrackController {
     private final TrackRepository trackRepository;
+    private final TrackStationRepository trackStationRepository;
 
-    public TrackController(TrackRepository trackRepository) {
+    public TrackController(TrackRepository trackRepository, TrackStationRepository trackStationRepository) {
         this.trackRepository = trackRepository;
+        this.trackStationRepository = trackStationRepository;
     }
 
     @GetMapping("")
@@ -28,8 +32,20 @@ public class TrackController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Track newTrack(@RequestBody Track newTrack) {
-
-        return trackRepository.save(newTrack);
+        Track tempTrack = new Track();
+        newTrack.setId(tempTrack.getId());
+        tempTrack = newTrack;
+        Track responseTrack = trackRepository.save(tempTrack);
+        if (!newTrack.getStations().isEmpty()) {
+            for (TrackStation trackStation: newTrack.getStations()) {
+                TrackStation tempStation = new TrackStation();
+                trackStation.setId(tempStation.getId());
+                tempStation = trackStation;
+                tempStation.setTrack(responseTrack);
+                trackStationRepository.save(tempStation);
+            }
+        }
+        return responseTrack;
     }
 
     @PutMapping("/edit/{id}")
