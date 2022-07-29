@@ -2,6 +2,7 @@ package de.rop.railopsplannerrestapi.controller;
 
 import de.rop.railopsplannerrestapi.entity.Track;
 import de.rop.railopsplannerrestapi.entity.TrackStation;
+import de.rop.railopsplannerrestapi.repository.TrackGroupRepository;
 import de.rop.railopsplannerrestapi.repository.TrackRepository;
 import de.rop.railopsplannerrestapi.repository.TrackStationRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,10 +19,13 @@ import java.util.Optional;
 public class TrackController {
     private final TrackRepository trackRepository;
     private final TrackStationRepository trackStationRepository;
+    private final TrackGroupRepository trackGroupRepository;
 
-    public TrackController(TrackRepository trackRepository, TrackStationRepository trackStationRepository) {
+
+    public TrackController(TrackRepository trackRepository, TrackStationRepository trackStationRepository, TrackGroupRepository trackGroupRepository) {
         this.trackRepository = trackRepository;
         this.trackStationRepository = trackStationRepository;
+        this.trackGroupRepository = trackGroupRepository;
     }
 
     @GetMapping("")
@@ -45,8 +49,6 @@ public class TrackController {
                 trackStationRepository.save(tempStation);
             }
         }
-        System.out.println("tempTrack:" + tempTrack.getId());
-        System.out.println("responseTrack" + responseTrack.getId());
         return responseTrack;
     }
 

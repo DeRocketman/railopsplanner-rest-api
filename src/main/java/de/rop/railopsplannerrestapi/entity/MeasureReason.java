@@ -12,13 +12,20 @@ import java.util.List;
 @Getter
 @Setter
 public class MeasureReason extends IdentifiedEntity {
-    @ManyToOne
+    @ManyToOne(targetEntity = Measure.class)
     @JoinColumn(name = "measure_ref")
     Measure measure;
 
     String reason;
-    String startOperationControlPoint;
-    String endOperationControlPoint;
+
+    @ManyToOne(targetEntity = Station.class)
+    @JoinColumn(name= "start_point")
+    Station startPoint;
+
+    @ManyToOne(targetEntity = Station.class)
+    @JoinColumn(name="end_point")
+    Station endPoint;
+
     String operatingMode;
     String start;
     String end;
