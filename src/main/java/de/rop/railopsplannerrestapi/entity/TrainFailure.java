@@ -15,10 +15,24 @@ public class TrainFailure extends IdentifiedEntity{
     @JoinColumn(name = "measure_ref")
     Measure measure;
     String trafficDay;
+    String lineNumber;
     String trainNumber;
     String trainType;
-    String startOperationControlPoint;
-    String destinationOperationControlPoint;
-    String failureFrom;
-    String failureTo;
+
+    @ManyToOne(targetEntity = Station.class)
+    @JoinColumn(name = "start_point")
+    Station startPoint;
+
+    @ManyToOne(targetEntity = Station.class)
+    @JoinColumn(name = "end_point")
+    Station endPoint;
+
+
+    @ManyToOne(targetEntity = Station.class)
+    @JoinColumn(name = "failure_from")
+    Station failureFrom;
+
+    @ManyToOne(targetEntity = Station.class)
+    @JoinColumn(name = "failure_to")
+    Station failureTo;
 }

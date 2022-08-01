@@ -22,11 +22,11 @@ public class Measure extends IdentifiedEntity{
     String responseDate;
     String measureKind;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Station.class)
     @JoinColumn(name = "start_point")
     Station startPoint;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Station.class)
     @JoinColumn(name = "end_Point")
     Station endPoint;
 
@@ -46,13 +46,14 @@ public class Measure extends IdentifiedEntity{
     List<Agent> agents;
 
     @ManyToMany(mappedBy = "measures")
+    @JsonIgnoreProperties({"measures"})
     List<User> clerks;
 
     @OneToMany(mappedBy = "measure")
     @JsonIgnoreProperties({"measure"})
     List<ToDoItem> toDoItems;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = RailNetwork.class)
     @JoinColumn(name = "rail_network_ref")
     RailNetwork railNetwork;
 }
