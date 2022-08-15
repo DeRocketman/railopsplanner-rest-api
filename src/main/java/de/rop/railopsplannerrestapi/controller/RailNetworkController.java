@@ -54,7 +54,7 @@ public class RailNetworkController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void deleteRailNetwork(@PathVariable String id) {
         try {

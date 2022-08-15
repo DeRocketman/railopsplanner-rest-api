@@ -18,7 +18,7 @@ public class TrackGroup extends IdentifiedEntity{
    @JsonIgnoreProperties({"trackGroup"})
    List<Track> tracks;
 
-   @ManyToOne(fetch = FetchType.LAZY)
+   @ManyToOne
    @JoinColumn(name = "rail_network_ref")
    RailNetwork railNetwork;
 }

@@ -1,10 +1,9 @@
 package de.rop.railopsplannerrestapi.controller;
 
 import de.rop.railopsplannerrestapi.entity.Measure;
-import de.rop.railopsplannerrestapi.entity.Measure;
-import de.rop.railopsplannerrestapi.entity.PlanningPeriod;
-import de.rop.railopsplannerrestapi.entity.TimeTableYear;
+
 import de.rop.railopsplannerrestapi.repository.MeasureRepository;
+import de.rop.railopsplannerrestapi.repository.StationRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +16,12 @@ import java.util.Optional;
 @RequestMapping("/api/measure")
 public class MeasureController {
 
-    private MeasureRepository measureRepository;
+    private final MeasureRepository measureRepository;
+    private final StationRepository stationRepository;
 
-    public MeasureController(MeasureRepository measureRepository) {
+    public MeasureController(MeasureRepository measureRepository, StationRepository stationRepository) {
         this.measureRepository = measureRepository;
+        this.stationRepository = stationRepository;
     }
 
     @GetMapping("")
@@ -29,10 +30,14 @@ public class MeasureController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Measure newTimeTableYear(@RequestBody Measure measure) {
-        return measureRepository.save(measure);
+    public ResponseEntity<Measure> newTimeTableYear(@RequestBody Measure measure) {
+
+
+            return new ResponseEntity<>(this.measureRepository.save(measure), HttpStatus.OK);
+
     }
+
+
     @PutMapping("/edit/{id}")
     public ResponseEntity<Measure> updateMeasure(@PathVariable("id") String id,@RequestBody Measure measure) {
         Optional<Measure> measureOptional = measureRepository.findById(id);

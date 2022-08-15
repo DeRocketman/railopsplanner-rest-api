@@ -65,10 +65,7 @@ public class TrackGroupController {
     public ResponseEntity<TrackGroup> updateTrackGroup(@PathVariable("id") String id, @RequestBody TrackGroup trackGroup) {
         Optional<TrackGroup> storedTrackGroup = trackGroupRepository.findById(id);
         if (storedTrackGroup.isPresent()) {
-            TrackGroup tempTrackGroup = storedTrackGroup.get();
-            tempTrackGroup.setName(trackGroup.getName());
-
-            return new ResponseEntity<>(trackGroupRepository.save(tempTrackGroup), HttpStatus.OK);
+            return new ResponseEntity<>(trackGroupRepository.save(trackGroup), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
