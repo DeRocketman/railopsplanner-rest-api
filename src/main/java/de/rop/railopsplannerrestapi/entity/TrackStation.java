@@ -18,9 +18,4 @@ public class TrackStation extends IdentifiedEntity{
     Float transferTime;
     Boolean railReplacementStop;
     Float railReplacementDrivingTime;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "track_ref")
-    private Track track;
-
 }

@@ -20,6 +20,7 @@ public class RailNetwork extends IdentifiedEntity{
     String abbreviation;
 
     @OneToMany(mappedBy = "railNetwork")
+    @JsonIgnoreProperties({"railNetwork"})
     List<Measure> measures;
 
     @OneToMany(mappedBy = "railNetwork")

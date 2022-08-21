@@ -21,4 +21,9 @@ public class TrackGroup extends IdentifiedEntity{
    @ManyToOne
    @JoinColumn(name = "rail_network_ref")
    RailNetwork railNetwork;
+
+   public void addTrack(Track track) {
+      tracks.add(track);
+      track.setTrackGroup(this);
+   }
 }

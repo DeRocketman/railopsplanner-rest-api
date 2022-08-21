@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,7 +33,7 @@ public class Measure extends IdentifiedEntity{
 
     @OneToMany(mappedBy = "measure")
     @JsonIgnoreProperties({"measure"})
-    List<MeasureReason> reasonList;
+    List<MeasureReason> reasons;
 
     @OneToMany(mappedBy = "measure")
     @JsonIgnoreProperties({"measure"})
@@ -43,10 +44,10 @@ public class Measure extends IdentifiedEntity{
     List<ScheduleDeviation> scheduleDeviations;
 
     @ManyToMany(mappedBy = "measures")
-    List<Agent> agents;
+    @JsonIgnoreProperties({"measures"})
+    Set<Agent> agents;
 
     @ManyToMany(mappedBy = "measures")
-    @JsonIgnoreProperties({"measures"})
     List<User> clerks;
 
     @OneToMany(mappedBy = "measure")
@@ -56,4 +57,28 @@ public class Measure extends IdentifiedEntity{
     @ManyToOne(targetEntity = RailNetwork.class)
     @JoinColumn(name = "rail_network_ref")
     RailNetwork railNetwork;
+
+    public void addAgent(Agent agent) {
+        agents.add(agent);
+        agent.getMeasures().add(this);
+    }
+
+    public void addClerk(User clerk) {
+        clerks.add(clerk);
+        clerk.getMeasures().add(this);
+    }
+
+    public void addMeasureReason(MeasureReason measureReason) {
+        reasons.add(measureReason);
+        measureReason.setMeasure(this);
+    }
+
+    public void addTrainFailure(TrainFailure trainFailure) {
+        trainFailures.add(trainFailure);
+        trainFailure.setMeasure(this);
+    }
+    public void addScheduleDeviation(ScheduleDeviation scheduleDeviation) {
+        scheduleDeviations.add(scheduleDeviation);
+        scheduleDeviation.setMeasure(this);
+    }
 }

@@ -1,11 +1,7 @@
 package de.rop.railopsplannerrestapi.controller;
 
-import de.rop.railopsplannerrestapi.entity.Track;
-import de.rop.railopsplannerrestapi.entity.TrackGroup;
-import de.rop.railopsplannerrestapi.entity.TrackStation;
-import de.rop.railopsplannerrestapi.repository.TrackGroupRepository;
-import de.rop.railopsplannerrestapi.repository.TrackRepository;
-import de.rop.railopsplannerrestapi.repository.TrackStationRepository;
+import de.rop.railopsplannerrestapi.entity.*;
+import de.rop.railopsplannerrestapi.repository.*;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +18,18 @@ public class TrackGroupController {
     private final TrackRepository trackRepository;
     private final TrackStationRepository trackStationRepository;
 
+    private final CrossStationRepository crossStationRepository;
+    private final StartEndStationRepository startEndStationRepository;
 
-    public TrackGroupController(TrackGroupRepository trackGroupRepository, TrackRepository trackRepository, TrackStationRepository trackStationRepository) {
+    public TrackGroupController(TrackGroupRepository trackGroupRepository, TrackRepository trackRepository,
+                                TrackStationRepository trackStationRepository,
+                                CrossStationRepository crossStationRepository,
+                                StartEndStationRepository startEndStationRepository) {
         this.trackGroupRepository = trackGroupRepository;
         this.trackRepository = trackRepository;
         this.trackStationRepository = trackStationRepository;
+        this.crossStationRepository = crossStationRepository;
+        this.startEndStationRepository = startEndStationRepository;
     }
 
     @GetMapping("")
@@ -37,28 +40,20 @@ public class TrackGroupController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public TrackGroup newTrackGroup(@RequestBody TrackGroup newTrackGroup) {
-        TrackGroup tempTrackGroup = new TrackGroup();
-        newTrackGroup.setId(tempTrackGroup.getId());
-        tempTrackGroup = newTrackGroup;
-        TrackGroup responseTrackGroup = trackGroupRepository.save(tempTrackGroup);
-        if (!newTrackGroup.getTracks().isEmpty()) {
-            for (Track track: newTrackGroup.getTracks()) {
-                Track tempTrack = new Track();
-                track.setId(tempTrack.getId());
-                tempTrack = track;
-                tempTrack.setTrackGroup(responseTrackGroup);
-                Track responseTrack = trackRepository.save(tempTrack);
-
-                for (TrackStation trackStation: tempTrack.getStations()) {
-                    TrackStation tempStation = new TrackStation();
-                    trackStation.setId(tempStation.getId());
-                    tempStation = trackStation;
-                    tempStation.setTrack(responseTrack);
-                    trackStationRepository.save(tempStation);
-                }
+        TrackGroup createdTrackGroup = this.trackGroupRepository.save(newTrackGroup);
+        for (Track createTrack: newTrackGroup.getTracks()) {
+            Track createdTrack = this.trackRepository.save(createTrack);
+            createdTrackGroup.addTrack(createdTrack);
+            StartEndStation startPoint = this.startEndStationRepository.save(createdTrack.getStartPoint());
+            createdTrack.setStartPoint(startPoint);
+            StartEndStation endPoint = this.startEndStationRepository.save(createdTrack.getEndPoint());
+            createdTrack.setEndPoint(endPoint);
+            for (CrossStation crossStation: createdTrack.getCrossStations()) {
+                CrossStation storedCrossStation = this.crossStationRepository.save(crossStation);
+                createdTrack.addCrossStation(storedCrossStation);
             }
         }
-        return responseTrackGroup;
+        return newTrackGroup;
     }
 
     @PutMapping("/edit/{id}")

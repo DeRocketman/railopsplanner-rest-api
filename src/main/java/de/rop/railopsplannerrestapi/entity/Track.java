@@ -17,11 +17,34 @@ public class Track extends IdentifiedEntity{
     private String lineNumber;
     private Boolean positiveDirection;
 
+    @OneToOne(mappedBy = "track")
+    @JsonIgnoreProperties({"track"})
+    StartEndStation startPoint;
+
+    @OneToOne(mappedBy = "track")
+    @JsonIgnoreProperties({"track"})
+    StartEndStation endPoint;
+
     @OneToMany(mappedBy = "track")
     @JsonIgnoreProperties({"track"})
-    List<TrackStation> stations = new java.util.ArrayList<>();
+    List<CrossStation> crossStations = new java.util.ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "track_group_ref")
     TrackGroup trackGroup;
+
+    public void addCrossStation(CrossStation crossStation) {
+        crossStations.add(crossStation);
+        crossStation.setTrack(this);
+    }
+
+    public void setStartPoint(StartEndStation startPoint) {
+        this.startPoint = startPoint;
+        startPoint.setTrack(this);
+    }
+
+    public void setEndPoint(StartEndStation endPoint) {
+        this.endPoint = endPoint;
+        endPoint.setTrack(this);
+    }
 }
