@@ -19,16 +19,19 @@ public class MeasureController {
     private final StationRepository stationRepository;
     private final ScheduleDeviationRepository deviationRepository;
     private final TrainFailureRepository trainFailureRepository;
+    private final AgentRepository agentRepository;
     private final UserRepository userRepository;
     private final MeasureReasonRepository measureReasonRepository;
 
     public MeasureController(MeasureRepository measureRepository, StationRepository stationRepository,
                              ScheduleDeviationRepository deviationRepository,
-                             TrainFailureRepository trainFailureRepository, UserRepository userRepository, MeasureReasonRepository measureReasonRepository) {
+                             TrainFailureRepository trainFailureRepository, AgentRepository agentRepository,
+                             UserRepository userRepository, MeasureReasonRepository measureReasonRepository) {
         this.measureRepository = measureRepository;
         this.stationRepository = stationRepository;
         this.deviationRepository = deviationRepository;
         this.trainFailureRepository = trainFailureRepository;
+        this.agentRepository = agentRepository;
         this.userRepository = userRepository;
         this.measureReasonRepository = measureReasonRepository;
     }
@@ -40,8 +43,16 @@ public class MeasureController {
     @PostMapping("/create")
     public ResponseEntity<Measure> newMeasure(@RequestBody Measure measure) {
             Measure createMeasure = this.measureRepository.save(measure);
-            for (Agent agentsToUpdate: createMeasure.getAgents()) {
-                createMeasure.addAgent(agentsToUpdate);
+            if (measure.getAgents() != null) {
+                for (Agent agentsToUpdate: createMeasure.getAgents()) {
+                    Optional<Agent> foundAgent = this.agentRepository.findAgentByEmail(agentsToUpdate.getEmail());
+                    if (foundAgent.isPresent()) {
+                        createMeasure.addAgent(foundAgent.get());
+                    } else {
+                        this.agentRepository.save(agentsToUpdate);
+                        createMeasure.addAgent(agentsToUpdate);
+                    }
+                }
             }
             if (measure.getTrainFailures() != null) {
                 for (TrainFailure trainFailure: measure.getTrainFailures()) {
