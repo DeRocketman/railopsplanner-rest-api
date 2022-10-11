@@ -29,4 +29,9 @@ public class Agent extends IdentifiedEntity{
             inverseJoinColumns = @JoinColumn(name = "measure_ref")
     )
     List<Measure> measures;
+
+    public void addMeasure(Measure measure) {
+        this.measures.add(measure);
+        measure.addAgent(this);
+    }
 }
